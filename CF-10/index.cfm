@@ -2,7 +2,19 @@
 <cfinvoke component="KeyStoreManager" method="init" returnvariable="KeyStoreManager">
 <cfset CertificateArray = KeyStoreManager.listAll()>
 <cfinclude template="../header.cfm">
+<style>
 
+.cellRightAndBottomBlueSide .danger {
+background-color:#990000;
+color:#ffffff;
+}
+
+.warning {
+background-color:#ffae00;
+color:#101010;
+
+}
+</style>
 <h2 class="pageHeader"> SSL Certificates &gt; Certificate Management</h2>
 
 <p>Certificates listed below are used by tags such as CFHTTP/CFEXCHANGE to access SSL sites.  To access a self-signed SSL site, add the certificate to the keystore.</p>
@@ -68,7 +80,7 @@
 				<td nowrap class="cellRightAndBottomBlueSide">
 					<cfoutput>#LSdateformat(CertificateArray[i][2].getNotBefore())#</cfoutput>
 				</td>
-				<td nowrap class="cellRightAndBottomBlueSide" <cfif CertificateArray[i][2].getNotAfter() LT Now()>bgcolor="#ff0000"</cfif>>
+				<td nowrap <cfif CertificateArray[i][2].getNotAfter() LT Now()>class="cellRightAndBottomBlueSide danger" <cfelseif DateDiff('d', Now(),CertificateArray[i][2].getNotAfter()) lt 60>class="cellRightAndBottomBlueSide warning" <cfelse>class="cellRightAndBottomBlueSide" </cfif>>
 					<cfoutput>#LSdateformat(CertificateArray[i][2].getNotAfter())#</cfoutput>
 				</td>
 				<td nowrap class="cellRightAndBottomBlueSide">
